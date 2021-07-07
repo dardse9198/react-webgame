@@ -1,5 +1,5 @@
 import React, {useRef, useState, useCallback} from 'react';
-import Try from "./Try1";
+import Try from "./Try";
 
 const getNumbers = () => {
   const candidates = [1, 2, 3, 4, 5, 6, 7, 8, 9];

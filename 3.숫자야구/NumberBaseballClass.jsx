@@ -1,11 +1,11 @@
 import React, { Component, createRef } from 'react';
-import Try from './Try1';
+import Try from './Try';
 
 function getNumbers() { // 숫자 네 개를 겹치지 않고 랜덤하게 뽑는 함수
   const candidate = [1,2,3,4,5,6,7,8,9];
   const array = [];
   for (let i = 0; i < 4; i += 1) {
-    const chosen = candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0];
+    const chosen = candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0]; 
     array.push(chosen);
   }
   return array;
@@ -16,7 +16,7 @@ class NumberBaseball extends Component {
     result: '',
     value: '',  // input창
     answer: getNumbers(), // ex: [1,3,5,7]
-    tries: [], // push 쓰면 안됨
+    tries: [], // 리액트에서 배열에 값 넣을 때 push 쓰면 안됨
   };
 
   onSubmitForm = (e) => {
@@ -26,7 +26,7 @@ class NumberBaseball extends Component {
       this.setState((prevState) => {
         return {
           result: '홈런!',
-          tries: [...prevState.tries, { try: value, result: '홈런!' }],
+          tries: [...prevState.tries, { try: value, result: '홈런!' }],  // try 배열에 값을 넣음[(기존 배열 복사(...), {새로운 값}]
         }
       });
       alert('게임을 다시 시작합니다!');
@@ -82,7 +82,8 @@ class NumberBaseball extends Component {
   // value랑 onChange랑 세트
   // 리액트 반복문 -> map {{'like', 'like', 'like'}.map(() => { return ( <li>like</li>); })}
   render() {
-    const { result, value, tries } = this.state;
+    const { result, value, tries } = this.state;  
+    // this.state 구조분해로 지워줌(이 코드 없으면 89번째줄 ㅔ<h1>{this.state.result}</h1>)
     return (
       <>
         <h1>{result}</h1>
