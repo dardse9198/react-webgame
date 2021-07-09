@@ -34,7 +34,7 @@ const RSP = () => {
         console.log('종료');
         clearInterval(interval.current);
       }
-    }, [imgCoord]);  // udrRffecf를 실행하고 싶은
+    }, [imgCoord]);  // udrRffecf를 실행하고 싶은 state
   
     const changeHand = () => {
       if (imgCoord === rspCoords.바위) {
