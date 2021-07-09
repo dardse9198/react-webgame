@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import Try from './Try1';
+import Try from './Try';
 
 function getNumbers() { // 숫자 네 개를 겹치지 않고 랜덤하게 뽑는 함수
   const candidate = [1,2,3,4,5,6,7,8,9];
@@ -19,6 +19,10 @@ class NumberBaseball extends Component {
     tries: [], // 리액트에서 배열에 값 넣을 때 push 쓰면 안됨
   };
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+
+  }
+  // A -> B -> C -> D일때 props를 받으면 쓸때없이 랜더링될 위험이 높음
   onSubmitForm = (e) => {
     const { value, tries, answer } = this.state;
     e.preventDefault();
@@ -65,7 +69,7 @@ class NumberBaseball extends Component {
             value: '',
           };
         });
-        this.inputRef.current.focus();
+        this.inputRef.current.focus();  // current 추가(장점 : 통일성)
       }
     }
   };
@@ -77,12 +81,13 @@ class NumberBaseball extends Component {
     });
   };
 
-  inputRef = createRef(); // this.inputRef
- 
+  inputRef = createRef(); // this.inputRef 생성 (this.inputRef를 그대로 ref에 넣어줌 -> current로 접근 가능)
+
   // value랑 onChange랑 세트
   // 리액트 반복문 -> map {{'like', 'like', 'like'}.map(() => { return ( <li>like</li>); })}
   render() {
-    const { result, value, tries } = this.state;
+    const { result, value, tries } = this.state;  
+    // this.state 구조분해로 지워줌(이 코드 없으면 89번째줄 ㅔ<h1>{this.state.result}</h1>)
     return (
       <>
         <h1>{result}</h1>

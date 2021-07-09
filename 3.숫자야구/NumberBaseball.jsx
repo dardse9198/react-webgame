@@ -1,5 +1,5 @@
-import React, {useRef, useState, useCallback} from 'react';
-import Try from "./Try1";
+import React, {useRef, useState, useCallback, memo} from 'react';
+import Try from "./Try";
 
 const getNumbers = () => {
   const candidates = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -11,17 +11,17 @@ const getNumbers = () => {
   return array;
 };
 
-const NumberBaseball = () => {
-  const [answer, setAnswer] = useState(getNumbers());
+const NumberBaseball = memo(() => { // hooks -> state, map 다름(props, map은 동일)
+  const [answer, setAnswer] = useState(getNumbers());  // getNumbers 통째로 다시 실행됨(해결 : useState, useCallback)
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
   const [tries, setTries] = useState([]);
-  const inputEl = useRef(null);
+  const inputEl = useRef(null);  // class에서는 inputRef, outputRef
 
   const onSubmitForm = useCallback((e) => {
     e.preventDefault();
     if (value === answer.join('')) {
-      setTries((t) => ([
+      setTries((t) => ([  // 옛날 try로 새 try를 만드는 경우에 함수형
         ...t,
         {
           try: value,
@@ -56,7 +56,7 @@ const NumberBaseball = () => {
             ball += 1;
           }
         }
-        setTries(t => ([
+        setTries(t => ([  // 옛날 try로 현재 try를 만들기 때문에 함수형으로 사용
           ...t,
           {
             try: value,
@@ -71,8 +71,15 @@ const NumberBaseball = () => {
 
   const onChangeInput = useCallback((e) => setValue(e.target.value), []);
 
+  // jsx에서 배열 return -> 거의 사용X
+  // return [
+  //   <div key="사과">사과</div>,  // key 필수
+  //   <div key="배">배</div>,
+  //   <div key="귤">귤</div>,
+  // ];
+
   return (
-    <>
+    <>  {/* <> </> : 여러 태그 묶을 때 사용 */}
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
         <input
@@ -85,12 +92,22 @@ const NumberBaseball = () => {
       </form>
       <div>시도: {tries.length}</div>
       <ul>
+        {/* react에서 for 반복문 사용법 -> 추천X
+        {(() => {
+          const array = [];
+          for(let i=0; i<tries.length; i++) {
+            array.push(<Try key={`${i + 1}차 시도 : ${v.try}`} tryInfo={v}/>);
+          }
+          return array;
+        })()}  // 즉시 실행 함수
+        */}
+      
         {tries.map((v, i) => (
           <Try key={`${i + 1}차 시도 : ${v.try}`} tryInfo={v}/>
         ))}
       </ul>
     </>
   );
-};
+});
 
 export default NumberBaseball; 
